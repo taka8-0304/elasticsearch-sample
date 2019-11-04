@@ -1,0 +1,63 @@
+
+buildscript {
+	repositories {
+		mavenLocal()
+		mavenCentral()
+		jcenter()
+	}
+    dependencies {
+    	classpath group: 'org.elasticsearch.gradle', name: 'build-tools', version: '7.4.2'		
+    }
+}
+
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'maven'
+apply plugin: 'elasticsearch.esplugin'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+group = 'org.jurabi.elasticsearch'
+version = '1.2.5'
+
+repositories {
+	mavenLocal()
+	mavenCentral()
+	jcenter()
+}
+[compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
+
+eclipse {
+	 classpath {
+		containers.clear()
+//			containers.add(jreContainer)
+		//default settings for downloading sources and Javadoc:
+		downloadSources = true
+		downloadJavadoc = true
+	}
+}
+
+ext {
+	licenseFile = project.file('LICENSE')
+	noticeFile = project.file('NOTICE')
+	clusterName = project.name
+	numNodes = 1
+}
+
+
+esplugin {
+	name project.name
+	description 'Elasticsearch sample plugin'
+	classname 'org.jurabi.elasticsearch.plugins.sample.SamplePlugin'
+}
+
+
+run {
+	extraConfigFile 'log4j2.properties', 'src/test/config/log4j2.properties'
+}
+
+artifacts {
+    archives sourcesJar
+}
+
