@@ -1,0 +1,2 @@
+# elasticsearch-sample
+Elasticsearchのサンプルコード
