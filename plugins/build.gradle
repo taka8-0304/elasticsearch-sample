@@ -1,5 +1,3 @@
-import org.elasticsearch.gradle.BwcVersions
-
 buildscript {
 	repositories {
 		mavenLocal()
@@ -7,17 +5,27 @@ buildscript {
 		jcenter()
 	}
     dependencies {
+    	// Elasticsearchはmavenのセントラルレポジトリにビルドツールを公開している。
+    	// https://mvnrepository.com/artifact/org.elasticsearch.gradle/build-tools
     	classpath group: 'org.elasticsearch.gradle', name: 'build-tools', version: '7.4.2'		
     }
 }
 
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'maven'
+plugins {
+	id 'java'
+	// 依存関係の解決にmavenが必要
+	id 'maven'
+	// 開発環境としてEclipseを使用する場合には必要
+	id 'eclipse'
+}
+
+// プラグインをビルドするためのGradleプラグインの名前
 apply plugin: 'elasticsearch.esplugin'
 
 sourceCompatibility = 1.8
+// ElasticsearchのruntimeがJDK1.8でも動作するようにしておく。
 targetCompatibility = 1.8
+
 group = 'taka8.elasticsearch.plugins'
 version = '0.0.1'
 
@@ -31,30 +39,25 @@ repositories {
 eclipse {
 	 classpath {
 		containers.clear()
-//			containers.add(jreContainer)
-		//default settings for downloading sources and Javadoc:
 		downloadSources = true
 		downloadJavadoc = true
 	}
 }
 
 ext {
+	// 以下の二つを設定しないとプラグインのビルドがエラーになる
 	licenseFile = project.file('LICENSE')
 	noticeFile = project.file('NOTICE')
-	clusterName = project.name
-	numNodes = 1
 }
-
 
 esplugin {
+	// プラグイン名
 	name project.name
+	
+	// プラグインの説明
 	description 'Elasticsearch sample plugin'
+	
+	// プラグインの入口
 	classname 'taka8.elasticsearch.plugins.SamplePlugin'
-}
-
-
-run {
-	extraConfigFile 'log4j2.properties', 'src/test/config/log4j2.properties'
-	distribution = 'oss-zip'
 }
 
