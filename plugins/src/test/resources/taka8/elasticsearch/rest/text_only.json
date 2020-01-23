@@ -1,0 +1,10 @@
+{
+  "query" : {
+    "match" : {
+      "text" : {
+        "query" : "value",
+        "operator" : "and"
+      }
+    }
+  }
+}

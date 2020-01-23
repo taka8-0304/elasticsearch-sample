@@ -16,6 +16,7 @@ import org.elasticsearch.rest.RestController;
 import org.elasticsearch.rest.RestHandler;
 
 import taka8.elasticsearch.rest.HelloWorldAction;
+import taka8.elasticsearch.rest.TextOnlySearchAction;
 
 // REST API用のプラグインを作成する際には、ActionPluginを実装する必要がある。
 public class SamplePlugin extends Plugin implements ActionPlugin {
@@ -27,7 +28,7 @@ public class SamplePlugin extends Plugin implements ActionPlugin {
 			IndexNameExpressionResolver indexNameExpressionResolver, Supplier<DiscoveryNodes> nodesInCluster) {
 		return Arrays.asList(//
 				// 独自定義のクラス(Hello World文字列を返却する
-				new HelloWorldAction(restController));
+				new HelloWorldAction(restController), new TextOnlySearchAction(restController));
 	}
 
 }
